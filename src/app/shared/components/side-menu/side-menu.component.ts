@@ -22,10 +22,11 @@ export class SideMenuComponent {
     route: `/reactive/${item.path}`,
   }));
 
-  authMenu: MenuItem[]  =  routes
-  .filter((item) => item.path !== '**')
-  .map(item => ({
-    title: `${ item.title }`,
-    route: `/reactive/${item.path}`,
-  }));
+  authMenu: MenuItem[] = [{
+    title: 'Registro', route: '/auth'
+  }];
+
+  countryMenu: MenuItem[] = [{
+    title: 'Países', route: '/country'
+  }];
 }
