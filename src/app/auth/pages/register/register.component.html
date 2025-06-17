@@ -1,89 +1,128 @@
-<h2>Reactivos: <small> Dinámicos </small></h2>
+<h2>Validaciones Reactivas</h2>
 <hr>
 
-<form autocomplete="off">
+<div class="row">
+    <div class="col">
 
-    <!-- Nombre -->
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label">Nombre</label>
-        <div class="col-sm-9">
-            <input class="form-control"
-                   placeholder="Nombre de la persona">
-            <span class="form-text text-danger">
-                   error message
-            </span>
-        </div>
-    </div>
+        <form autocomplete="off" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-    <!-- Agregar Favorito -->
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label">Agregar</label>
-        <div class="col-sm-9">
+            <!-- Nombre -->
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Nombre y apellido</label>
+                <div class="col-sm-9">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Nombre y apellido del usuario"
+                           formControlName="name">
 
-            <div class="input-group">
-                <input class="form-control"
-                       placeholder="Agregar favorito">
-
-
-                <button class="btn btn-outline-primary"
-                        type="button">
-                    Agregar favorito
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Lista de Juegos Favoritos -->
-    <div class="mb-3 row">
-        <label class="col-sm-3 col-form-label">Favoritos</label>
-        <div class="col-sm-9">
-
-            <div class="mb-1">
-
-                <div class="input-group">
-                    <input class="form-control">
-
-                    <button class="btn btn-outline-danger"
-                            type="button">
-                      Eliminar
-                  </button>
+                    @if( formUtils.isValidField(registerForm, 'name') ) {
+                        <span class="form-text text-danger">
+                           {{  formUtils.getFieldError(registerForm, 'name' ) }}
+                        </span>
+                    }
                 </div>
-                <span class="form-text text-danger">
-                   Este campo es requerido
-                </span>
-
             </div>
 
-        </div>
+            <!-- Email -->
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="email"
+                           class="form-control"
+                           placeholder="Email del usuario"
+                           formControlName="email">
+                    @if( formUtils.isValidField(registerForm, 'email') ) {
+                        <span class="form-text text-danger">
+                            {{  formUtils.getFieldError(registerForm, 'email' ) }}
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Username -->
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Username</label>
+                <div class="col-sm-9">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Nombre código del usuario"
+                           formControlName="username">
+                    @if( formUtils.isValidField(registerForm, 'username') ) {
+                        <span class="form-text text-danger">
+                           {{  formUtils.getFieldError(registerForm, 'username' ) }}
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Password</label>
+                <div class="col-sm-9">
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Password de su cuenta"
+                           formControlName="password">
+
+                    @if( formUtils.isValidField(registerForm, 'password') ) {
+                        <span class="form-text text-danger">
+                           {{  formUtils.getFieldError(registerForm, 'password' ) }}
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <!-- Password2 -->
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Confirmar</label>
+                <div class="col-sm-9">
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Confirmar la contraseña"
+                           formControlName="confirm">
+
+                   @if( formUtils.isValidField(registerForm, 'confirm') ) {
+                        <span class="form-text text-danger">
+                           {{  formUtils.getFieldError(registerForm, 'confirm' ) }}
+                        </span>
+                    }
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary float-end"
+                            type="submit">
+                        Crear
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
     </div>
+</div>
 
 
+<h2>Form Valid: {{ registerForm.valid }} </h2>
+<h2>Form Status: {{ registerForm.status }} </h2>
+<h2>Form Pending: {{ registerForm.pending}} </h2>
+<h2>Form errors</h2>
+<pre>{{ registerForm.errors | json }}</pre>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <button type="submit"
-                    class="btn btn-primary float-end"
-                    >
-                    <!-- [disabled]="myForm.invalid" -->
-                Guardar
-            </button>
-        </div>
-    </div>
+<h5>Nombre</h5>
+<pre>{{ registerForm.get('name')?.errors| json }}</pre>
+
+<h5>Email</h5>
+<pre>{{ registerForm.get('email')?.errors| json }}</pre>
+
+<h5>Username</h5>
+<pre>{{ registerForm.get('username')?.errors| json }}</pre>
 
 
-</form>
+<h5>Password</h5>
+<pre>{{ registerForm.get('password')?.errors| json }}</pre>
 
-
-
-<span>Valid</span>
-<pre>{{ 'object' | json }}</pre>
-<br>
-
-<span>Value</span>
-<pre>{{ 'object' | json }}</pre>
-<br>
-
-<span>Agregar Juego</span>
-<pre>{{ 'object' | json }}</pre>
-<pre>{{ 'object' | json }}</pre>
+<h5>Confirmar</h5>
+<pre>{{ registerForm.get('confirm')?.errors| json }}</pre>
