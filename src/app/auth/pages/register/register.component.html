@@ -81,9 +81,9 @@
                            placeholder="Confirmar la contraseña"
                            formControlName="confirm">
 
-                   @if( formUtils.isValidField(registerForm, 'confirm') ) {
+                   @if( registerForm.errors && registerForm.get('confirm')?.touched ) {
                         <span class="form-text text-danger">
-                           {{  formUtils.getFieldError(registerForm, 'confirm' ) }}
+                          Las contraseñas no coinciden
                         </span>
                     }
                 </div>

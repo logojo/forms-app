@@ -1,5 +1,16 @@
 import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
 
+
+//* función asincrona para ejemplo
+
+async function sleep() {
+  return new Promise( resolve => {
+    setTimeout(() => {
+      resolve(true)
+    },2500)
+  })  
+}
+
 export class FormUtil {
 
   static namePattern = '^([a-zA-Z]+) ([a-zA-Z]+)$';
@@ -20,6 +31,10 @@ export class FormUtil {
             return `El campo ${field} debe contener minimo ${errors['minlength'].requiredLength } caracteres`;
           case 'min':
             return `el valor minimo es ${errors['min'].min } `;
+          case 'emailTaken':
+            return `El correo ya fue registrado con anterioridad`;
+          case 'usernameTaken':
+            return `El usuario ya fue registrado con anterioridad`;
           case 'pattern':
               if( errors['pattern'].requiredPattern === FormUtil.namePattern )
                 return `El campo debe de tener nombre y apellido`;
@@ -63,17 +78,37 @@ export class FormUtil {
    return FormUtil.getTextErrors(errors, index);
   }
 
-  static passConfirmValid( pass: string, confirm: string  ) : ValidationErrors {
+  static passConfirmValid( pass: string, confirm: string  )  {
       return ( formGroup : AbstractControl ) => {
-        const password = formGroup.get('pass')?.value;
-        const confirm = formGroup.get('pass')?.value;
+        const password = formGroup.get(pass)?.value;
+        const conf = formGroup.get(confirm)?.value;
 
-        return password === confirm 
+        return password === conf 
         ? null
         : {
             confirmInvalid: true
           }
       }
+  }
+
+  static async checkingServeResponse(control: AbstractControl) : Promise<ValidationErrors | null> {
+   
+    
+    await sleep(); //simulando peticion al servidor
+
+    const formvalue = control.value;
+
+    if( formvalue === 'hola@mundo.com') {
+      return {
+        emailTaken: true
+      }
     }
+    return null;
+  }
+
+  static checkingUsername(control: AbstractControl) : ValidationErrors | null {
+    const value = control.value;
+    return value === 'logojo' ? { usernameTaken: true } :  null;
+  }
   
 }
